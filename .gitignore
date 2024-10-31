@@ -1,0 +1,72 @@
+# Project files
+HELP.md
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore build output directories
+target/
+out/
+build/
+*.war
+*.ear
+*.jar
+
+# Include Maven wrapper JAR
+!.mvn/wrapper/maven-wrapper.jar
+
+# Include specific build directories in main and test
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Ignore IDE project files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+nbproject/private/
+
+# Include specific IntelliJ configuration files
+!.idea/libraries
+!.idea/runConfigurations
+
+# Ignore environment and configuration files
+.env
+*.env
+application.properties
+application-*.properties
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.tmp
+*.bak
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore system files
+hs_err_pid*
+
+# Ignore Docker files
+**/Dockerfile.*
+docker-compose.override.yml
+.dockerignore
+.docker/
+
+# Ignore miscellaneous generated files
+.mvn/
+.mvnw
+.mvnw.cmd
+
+# Ignore temporary files from editors and OS
+*.swp
+*.swo
+*.orig
+*~
+
+# Ignore binary or any user configuration files
+bin/
+*/bin/
