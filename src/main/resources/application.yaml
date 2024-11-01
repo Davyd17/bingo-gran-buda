@@ -6,9 +6,9 @@ app:
   datasource:
     main:
       driver-class-name: org.postgresql.Driver
-      jdbc-url: ${POSTGRES_URL}
-      username: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
+      jdbc-url: jdbc:postgresql://localhost:5432/bingo_data
+      username: admin
+      password: root
       pool-size: 30
 
 server:
