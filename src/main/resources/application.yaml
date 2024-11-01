@@ -4,12 +4,12 @@ spring:
 
 app:
   datasource:
-  main:
-    driver-class-name: org.postgresql.Driver
-    jdbc-url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    pool-size: 30
+    main:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: ${POSTGRES_URL}
+      username: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      pool-size: 30
 
 server:
   error:
