@@ -13,7 +13,7 @@ CREATE TYPE "card_status" AS ENUM (
 
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "username" VARHCAR(50) UNIQUE NOT NULL,
+  "username" VARCHAR(50) UNIQUE NOT NULL,
   "password" VARCHAR(100) NOT NULL,
   "created_at" TIMESTAMP DEFAULT NOW()
 );
@@ -29,7 +29,7 @@ CREATE TABLE "cards" (
   "numbers" INT[] NOT NULL,
   "status" card_status NOT NULL,
   "user_id" INTEGER UNIQUE NOT NULL REFERENCES users (id),
-  "game_id" INTEGER NOT NULL REFERENCES games (id) ON DELETE NULL
+  "game_id" INTEGER NOT NULL REFERENCES games (id) ON DELETE SET NULL
 );
 
 CREATE TABLE "selections" (
