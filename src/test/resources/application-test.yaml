@@ -1,0 +1,19 @@
+spring:
+  profile:
+    env: test
+  application:
+    name: "Bingo Project Test"
+
+app:
+  datasource:
+    main:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://localhost:5433/test_bingo_data
+      username: test_user
+      password: test_password
+      pool-size: 30
+
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
