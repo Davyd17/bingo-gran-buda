@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres_container
+    container_name: postgres_${POSTGRES_DB}
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -8,22 +8,22 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - ${POSTGRES_VOLUME_NAME}:/data/postgres
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - "${POSTGRES_PORT}:5432"
     networks:
       - postgres
     restart: unless-stopped
 
   pgadmin:
-    container_name: my_pgadmin_container
+    container_name: pgadmin_${POSTGRES_DB}
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-      - pgadmin:/var/lib/pgadmin
+      - ${PGADMIN_VOLUME_NAME}:/var/lib/pgadmin
 
     ports:
       - "5050:80"
@@ -36,5 +36,7 @@ networks:
     driver: bridge
 
 volumes:
-  postgres:
-  pgadmin:
+  postgres_bingo_data_test:
+  pgadmin_bingo_test:
+  postgres_bingo_data:
+  pgadmin_bingo_data:
