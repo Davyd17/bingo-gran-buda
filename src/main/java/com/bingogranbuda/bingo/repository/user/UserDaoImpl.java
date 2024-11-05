@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao{
 
         String sql = """
                 UPDATE users
-                SET (username = ?, password = ?)
+                SET username = ?, password = ?
                 WHERE id = ?;
                 """;
         return jdbcTemplate.update(sql, entity.username(), entity.password(), id);
