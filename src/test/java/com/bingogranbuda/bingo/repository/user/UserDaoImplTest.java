@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
@@ -25,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(DataSourceConfigTest.class) // Import your test configuration
 @Transactional // Optionally for transaction management
 @Rollback
-public class DaoImplTest {
+public class UserDaoImplTest {
 
     @Autowired
     UserDao userDao;
