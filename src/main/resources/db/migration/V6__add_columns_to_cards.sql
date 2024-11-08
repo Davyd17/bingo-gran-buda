@@ -1,0 +1,3 @@
+ALTER TABLE cards
+ADD COLUMN selected_numbers INT[] DEFAULT '{}',
+ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT NOW();
