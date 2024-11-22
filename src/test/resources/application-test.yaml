@@ -1,19 +1,8 @@
 spring:
-  profile:
-    env: test
-  application:
-    name: "Bingo Project Test"
-
-app:
   datasource:
-    main:
-      driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:postgresql://localhost:5433/test_bingo_data
-      username: test_user
-      password: test_password
-      pool-size: 30
+    url: jdbc:tc:postgresql:15:///db_test
+    username: userTest
+    password: passTest
+  flyway:
+    enabled: true
 
-server:
-  error:
-    include-binding-errors: always
-    include-message: always
