@@ -1,31 +1,45 @@
 package com.bingogranbuda.bingo.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
-@Profile("test")
 @TestConfiguration
 public class DataSourceConfigTest {
 
     @Bean
-    @ConfigurationProperties("app.datasource.main")
-    public HikariDataSource testHikariDatasource(){
+    public static PostgreSQLContainer<?> postgresContainer(){
+        try(PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres")
+                .withUsername("userTest")
+                .withPassword("passTest")
+                .withDatabaseName("db_test")) {
+
+            container.start();
+            return container;
+        }
+    }
+
+    @Bean
+    public HikariDataSource hikariDatasource(PostgreSQLContainer<?> postgresContainer){
         return DataSourceBuilder
                 .create()
                 .type(HikariDataSource.class)
+                .url(postgresContainer.getJdbcUrl())
+                .username(postgresContainer.getUsername())
+                .password(postgresContainer.getPassword())
+                .driverClassName(postgresContainer.getDriverClassName())
                 .build();
     }
 
     @Bean
-    public JdbcTemplate testJdbcTemplate(HikariDataSource testHikariDatasource){
-        return new JdbcTemplate(testHikariDatasource);
+    public JdbcTemplate jdbcTemplate(HikariDataSource hikariDataSource){
+        return new JdbcTemplate(hikariDataSource);
     }
 }
