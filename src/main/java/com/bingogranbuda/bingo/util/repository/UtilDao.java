@@ -1,4 +1,4 @@
-package com.bingogranbuda.bingo.util.repository_util;
+package com.bingogranbuda.bingo.util.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

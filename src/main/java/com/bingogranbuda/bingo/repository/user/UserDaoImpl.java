@@ -42,6 +42,18 @@ public class UserDaoImpl implements UserDao{
                 .findFirst();
     }
 
+    public Optional<User> getByUsername(String username){
+
+        String sql = """
+                SELECT id, username, password, created_at
+                FROM users
+                WHERE username = ?;
+                """;
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), username)
+                .stream().findFirst();
+    }
+
     @Override
     public int insert(User entity) {
 
