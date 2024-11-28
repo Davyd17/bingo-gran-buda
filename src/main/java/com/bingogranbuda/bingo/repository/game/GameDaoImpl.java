@@ -1,7 +1,7 @@
 package com.bingogranbuda.bingo.repository.game;
 
 import com.bingogranbuda.bingo.model.Game;
-import com.bingogranbuda.bingo.util.repository_util.UtilDao;
+import com.bingogranbuda.bingo.util.repository.UtilDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
