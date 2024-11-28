@@ -2,7 +2,7 @@ package com.bingogranbuda.bingo.repository.card;
 
 import com.bingogranbuda.bingo.model.Card;
 import com.bingogranbuda.bingo.model.status.CardStatus;
-import com.bingogranbuda.bingo.util.repository_util.UtilDao;
+import com.bingogranbuda.bingo.util.repository.UtilDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
