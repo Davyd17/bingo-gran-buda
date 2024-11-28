@@ -8,22 +8,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-@Rollback
 public class CardDaoImplTest {
 
     @Autowired
@@ -32,68 +34,157 @@ public class CardDaoImplTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private int[] generateRandomNumbers(){
 
-        int randomNumberFrom1To76 = (int) ((Math.random() * 75) + 1);
+    private final List<Integer> numbersFrom1to75 = new ArrayList<>(IntStream.rangeClosed(1,75)
+            .map(i -> i + 1).boxed().toList());
 
-        return IntStream.rangeClosed(0,24).map(i -> randomNumberFrom1To76).toArray();
+    private List<Integer> pickCardNumbers(){
+
+        Collections.shuffle(numbersFrom1to75);
+
+        return numbersFrom1to75.stream().limit(24).toList();
     }
 
-    private final int[] cardNumbers = generateRandomNumbers();
+    private List<Integer> selectedNumbersFromCard(){
 
-    private final int[] selectedRandomNumbers = IntStream.rangeClosed(1, 5)
-                                            .map(i  -> cardNumbers[(int)(Math.random() * 4)])
-                                            .toArray();
+        Collections.shuffle(new ArrayList<>(pickCardNumbers()));
+
+        return pickCardNumbers().stream().limit(5).toList();
+    }
+
 
     Card newCard = new Card(
             null,
-            List.of(Arrays.stream(generateRandomNumbers()).iterator().next()),
+            pickCardNumbers(),
             CardStatus.UNDEFINED,
             2,
             1,
-            List.of(Arrays.stream(selectedRandomNumbers).iterator().next()),
+            selectedNumbersFromCard(),
             new Timestamp(System.currentTimeMillis())
 
     );
 
-
     @BeforeEach
     void setUp(){
 
+        jdbcTemplate.execute("DELETE FROM cards WHERE id > 0;");
+        jdbcTemplate.execute("ALTER SEQUENCE cards_id_seq RESTART WITH 1");
     }
 
     @Test
     void getAll(){
 
+        cardDao.insert(new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.UNDEFINED,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+
+        ));
+
+        cardDao.insert(new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.WIN,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+
+        ));
+
+
         List<Card> cards = cardDao.getAll();
+
         assertThat(cards).isNotEmpty();
+        assertThat(cards.size()).isGreaterThan(1);
     }
 
     @Test
-    void getById(){
+    void getById() {
 
-        Optional<Card> optionalCard = cardDao.getById(2);
+        cardDao.insert(new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.UNDEFINED,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+
+        ));
+
+        Optional<Card> optionalCard = cardDao.getById(1);
+
         assertThat(optionalCard.isPresent()).isEqualTo(true);
     }
 
     @Test
     void insert(){
 
-        int result = cardDao.insert(newCard);
-        assertThat(result).isEqualTo(1);
+        Card newCard = new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.UNDEFINED,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+
+        );
+
+        int operationResult = cardDao.insert(newCard);
+
+        assertThat(operationResult).isEqualTo(1);
     }
 
     @Test
     void delete(){
 
-        int result = cardDao.delete(2);
-        assertThat(result).isEqualTo(1);
+        cardDao.insert(new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.UNDEFINED,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+        ));
+
+        int operationResult = cardDao.delete(1);
+
+        assertThat(operationResult).isEqualTo(1);
     }
 
     @Test
     void update(){
 
+        cardDao.insert(new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.UNDEFINED,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+
+        ));
+
+        Card newCard = new Card(
+                null,
+                pickCardNumbers(),
+                CardStatus.WIN,
+                2,
+                1,
+                selectedNumbersFromCard(),
+                new Timestamp(System.currentTimeMillis())
+        );
+
         int result = cardDao.update(1, newCard);
+
         assertThat(result).isEqualTo(1);
     }
 
