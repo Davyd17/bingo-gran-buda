@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +20,10 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-@Rollback
 public class GameDaoImplTest {
 
     @Autowired
@@ -31,50 +32,106 @@ public class GameDaoImplTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    Game newGame = new Game(
-            null,
-            GameStatus.WAITING,
-            List.of(IntStream.rangeClosed(1,75).iterator().next())
-    );
-
 
     @BeforeEach
     void setUp(){
-
+        jdbcTemplate.execute("DELETE FROM games WHERE id > 0;");
+        jdbcTemplate.execute("ALTER SEQUENCE games_id_seq RESTART WITH 1");
     }
 
     @Test
     void getAll(){
 
+        gameDao.insert(new Game(
+                null,
+                GameStatus.WAITING,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        ));
+
+        gameDao.insert(new Game(
+                null,
+                GameStatus.COMPLETED,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        ));
+
         List<Game> cards = gameDao.getAll();
+
         assertThat(cards).isNotEmpty();
+        assertThat(cards.size()).isGreaterThan(1);
     }
 
     @Test
     void getById(){
 
-        Optional<Game> optionalCard = gameDao.getById(2);
+        gameDao.insert(new Game(
+                null,
+                GameStatus.COMPLETED,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        ));
+
+        Optional<Game> optionalCard = gameDao.getById(1);
         assertThat(optionalCard.isPresent()).isEqualTo(true);
     }
 
     @Test
     void insert(){
 
+        Game newGame = new Game(
+                null,
+                GameStatus.COMPLETED,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        );
+
         int result = gameDao.insert(newGame);
+
         assertThat(result).isEqualTo(1);
     }
 
     @Test
     void delete(){
 
-        int result = gameDao.delete(2);
+        gameDao.insert(new Game(
+                null,
+                GameStatus.COMPLETED,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        ));
+
+        int result = gameDao.delete(1);
+
         assertThat(result).isEqualTo(1);
     }
 
     @Test
     void update(){
 
+        gameDao.insert(new Game(
+                null,
+                GameStatus.COMPLETED,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        ));
+
+        Game newGame = new Game(
+                null,
+                GameStatus.WAITING,
+                IntStream.range(1, 75)
+                        .map(i -> i + 1)
+                        .boxed().toList()
+        );
+
         int result = gameDao.update(1, newGame);
+
         assertThat(result).isEqualTo(1);
     }
 
