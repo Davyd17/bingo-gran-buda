@@ -1,0 +1,2 @@
+ALTER TABLE cards
+ALTER COLUMN game_id DROP NOT NULL;
