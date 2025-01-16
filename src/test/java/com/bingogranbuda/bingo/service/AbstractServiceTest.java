@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,12 +45,12 @@ public class AbstractServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         User user2 = new User(2,
                 "user2Test",
                 "pass2Test",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getAll()).thenReturn(List.of(user, user2));
 
@@ -70,7 +70,7 @@ public class AbstractServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(1)).thenReturn(Optional.of(user));
 
@@ -101,7 +101,7 @@ public class AbstractServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.insert(user)).thenReturn(1);
 
@@ -117,7 +117,7 @@ public class AbstractServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.insert(user)).thenReturn(0);
 
@@ -138,7 +138,7 @@ public class AbstractServiceTest {
         User user = new User(2,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(validId)).thenReturn(Optional.of(user));
         when(userDao.delete(validId)).thenReturn(1);
@@ -176,7 +176,7 @@ public class AbstractServiceTest {
         User user = new User(2,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(2)).thenReturn(Optional.of(user));
         when(userDao.delete(2)).thenReturn(0);
@@ -201,12 +201,12 @@ public class AbstractServiceTest {
         User user = new User(2,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         User newUser = new User(1,
                 "newUserTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(validId)).thenReturn(Optional.of(user));
         when(userDao.update(validId, newUser)).thenReturn(1);
@@ -229,7 +229,7 @@ public class AbstractServiceTest {
         User newUser = new User(null,
                 "newUserTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(invalidId)).thenReturn(Optional.empty());
 
@@ -249,12 +249,12 @@ public class AbstractServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         User newUser = new User(1,
                 "newUserTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(1)).thenReturn(Optional.of(user));
         when(userDao.update(1, newUser)).thenReturn(0);

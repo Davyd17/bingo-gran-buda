@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class UserRowMapper implements RowMapper<User> {
 
@@ -14,7 +15,7 @@ public class UserRowMapper implements RowMapper<User> {
                 rs.getInt("id"),
                 rs.getString("username"),
                 rs.getString("password"),
-                rs.getTimestamp("created_at")
+                rs.getTimestamp("created_at").toLocalDateTime()
         );
     }
 }

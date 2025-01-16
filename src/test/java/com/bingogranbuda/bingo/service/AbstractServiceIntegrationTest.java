@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,14 +53,13 @@ public class AbstractServiceIntegrationTest {
         dao.insert(new User(1,
                 "userTest1",
                 "testPass1",
-                new Timestamp(System.currentTimeMillis())));
+                LocalDateTime.now()));
 
         dao.insert(new User(2,
                 "userTest2",
                 "testPass2",
-                new Timestamp(System.currentTimeMillis())));
+                LocalDateTime.now()));
     }
-
     @Test
     void findById_ReturnUser_WhenIdExist(){
 
@@ -91,7 +90,7 @@ public class AbstractServiceIntegrationTest {
         User newUSer = new User(null,
                 "newUserTest",
                 "newPassTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         //Act
         abstractService.create(newUSer);
@@ -123,7 +122,7 @@ public class AbstractServiceIntegrationTest {
         User newUser = new User(null,
                 "newUserTest",
                 "newPassTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         //Act & Assert
         assertDoesNotThrow(() -> {

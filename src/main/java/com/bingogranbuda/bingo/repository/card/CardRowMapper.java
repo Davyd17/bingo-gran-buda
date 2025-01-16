@@ -27,7 +27,7 @@ public class CardRowMapper implements RowMapper<Card> {
                 rs.getInt("user_id"),
                 rs.getInt("game_id"),
                 UtilDao.sqlArrayToList(rs, "selected_numbers"),
-                rs.getTimestamp("created_at")
+                rs.getTimestamp("created_at").toLocalDateTime()
         );
     }
 }

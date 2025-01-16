@@ -1,11 +1,11 @@
 package com.bingogranbuda.bingo.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public record User(
         Integer id,
         String username,
         String password,
-        Timestamp createdAt
+        LocalDateTime createdAt
 ) {
 }

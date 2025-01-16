@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +61,7 @@ public class CardDaoImplTest {
             2,
             1,
             selectedNumbersFromCard(),
-            new Timestamp(System.currentTimeMillis())
+            LocalDateTime.now()
 
     );
 
@@ -81,7 +82,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
 
         ));
 
@@ -92,7 +93,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
 
         ));
 
@@ -113,7 +114,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
 
         ));
 
@@ -132,7 +133,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
 
         );
 
@@ -151,7 +152,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         int operationResult = cardDao.delete(1);
@@ -169,7 +170,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
 
         ));
 
@@ -180,7 +181,7 @@ public class CardDaoImplTest {
                 2,
                 1,
                 selectedNumbersFromCard(),
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         );
 
         int result = cardDao.update(1, newCard);

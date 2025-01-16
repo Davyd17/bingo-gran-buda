@@ -3,6 +3,7 @@ package com.bingogranbuda.bingo.model;
 import com.bingogranbuda.bingo.model.status.CardStatus;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record Card(
@@ -12,6 +13,6 @@ public record Card(
         Integer userId,
         Integer gameId,
         List<Integer> selectedNumbers,
-        Timestamp created_at
+        LocalDateTime created_at
 ) {
 }
