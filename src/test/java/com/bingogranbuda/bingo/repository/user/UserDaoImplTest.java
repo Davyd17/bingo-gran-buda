@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,14 +47,14 @@ public class UserDaoImplTest {
                 null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         userDao.insert(new User (
                 null,
                 "userTest2",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         List<User> users = userDao.getAll();
@@ -69,7 +70,7 @@ public class UserDaoImplTest {
                 null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         Optional<User> userOptional = userDao.getById(1);
@@ -84,7 +85,7 @@ public class UserDaoImplTest {
                 null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         Optional<User> userOptional = userDao.getByUsername("userTest");
@@ -98,7 +99,7 @@ public class UserDaoImplTest {
         User newUser = new User(null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         int result = userDao.insert(newUser);
 
@@ -112,7 +113,7 @@ public class UserDaoImplTest {
                 null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         int result = userDao.delete(1);
@@ -127,14 +128,14 @@ public class UserDaoImplTest {
                 null,
                 "userTest",
                 "passwordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         ));
 
         User newUser = new User (
                 null,
                 "userUpdateTest",
                 "myPasswordTest",
-                new Timestamp(System.currentTimeMillis())
+                LocalDateTime.now()
         );
 
         int result = userDao.update(1, newUser);

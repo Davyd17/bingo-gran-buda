@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,12 +45,12 @@ public class UserServiceIntegrationTest {
         userDao.insert(new User(1,
                 "userTest1",
                 "testPass1",
-                new Timestamp(System.currentTimeMillis())));
+                LocalDateTime.now()));
 
         userDao.insert(new User(2,
                 "userTest2",
                 "testPass2",
-                new Timestamp(System.currentTimeMillis())));
+                LocalDateTime.now()));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class UserServiceIntegrationTest {
         User wrongUser = new User(1,
                 duplicateUsername,
                 "testPass1",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         //Act & Assert
         assertThrows(DuplicateRecordException.class, () -> {

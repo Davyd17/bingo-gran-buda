@@ -9,12 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +34,7 @@ class UserServiceTest {
         User user = new User(1,
                 duplicateUsername,
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getByUsername(duplicateUsername)).thenReturn(Optional.of(user));
 
@@ -58,7 +54,7 @@ class UserServiceTest {
         User user = new User(1,
                 "userTest",
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getByUsername("userTest")).thenReturn(Optional.empty());
         when(userDao.insert(user)).thenReturn(1);
@@ -78,7 +74,7 @@ class UserServiceTest {
         User user = new User(1,
                 uniqueUsername,
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getByUsername(uniqueUsername)).thenReturn(Optional.empty());
         when(userDao.insert(user)).thenReturn(0);
@@ -102,12 +98,12 @@ class UserServiceTest {
         User newUser = new User(null,
                 uniqueUserName,
                 "newPassTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         User oldUser = new User(1,
                 oldUserName,
                 "oldPassTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getByUsername(newUser.username())).thenReturn(Optional.empty());
         when(userDao.getById(1)).thenReturn(Optional.of(oldUser));
@@ -152,7 +148,7 @@ class UserServiceTest {
         User user = new User(1,
                 uniqueUsername,
                 "passTest",
-                new Timestamp(System.currentTimeMillis()));
+                LocalDateTime.now());
 
         when(userDao.getById(1)).thenReturn(Optional.of(user));
         when(userDao.getByUsername(user.username())).thenReturn(Optional.empty());
