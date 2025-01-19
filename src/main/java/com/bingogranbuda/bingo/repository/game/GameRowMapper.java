@@ -2,7 +2,7 @@ package com.bingogranbuda.bingo.repository.game;
 
 import com.bingogranbuda.bingo.model.Game;
 import com.bingogranbuda.bingo.model.status.GameStatus;
-import com.bingogranbuda.bingo.util.repository.UtilDao;
+import com.bingogranbuda.bingo.util.repository.SqlUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -25,7 +25,7 @@ public class GameRowMapper implements RowMapper<Game> {
         return new Game(
                 rs.getInt("id"),
                 gameStatusFromString(rs.getString("status")),
-                UtilDao.sqlArrayToList(rs, "generated_ballots")
+                SqlUtil.sqlArrayToList(rs, "generated_ballots")
         );
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
@@ -103,7 +104,7 @@ public class AbstractServiceTest {
                 "passTest",
                 LocalDateTime.now());
 
-        when(userDao.insert(user)).thenReturn(1);
+        when(userDao.insert(user)).thenReturn(Optional.of(user));
 
         //Act & Assert
         assertDoesNotThrow(() -> abstractService.create(user));
@@ -119,7 +120,7 @@ public class AbstractServiceTest {
                 "passTest",
                 LocalDateTime.now());
 
-        when(userDao.insert(user)).thenReturn(0);
+        when(userDao.insert(user)).thenReturn(Optional.empty());
 
         //Act & Assert
         assertThrows(IllegalStateException.class, () -> {
@@ -198,18 +199,18 @@ public class AbstractServiceTest {
         int validId = 1;
 
         //Arrange
-        User user = new User(2,
+        User user = new User(1,
                 "userTest",
                 "passTest",
                 LocalDateTime.now());
 
-        User newUser = new User(1,
+        User newUser = new User(validId,
                 "newUserTest",
                 "passTest",
                 LocalDateTime.now());
 
         when(userDao.getById(validId)).thenReturn(Optional.of(user));
-        when(userDao.update(validId, newUser)).thenReturn(1);
+        when(userDao.update(validId, newUser)).thenReturn(Optional.of(newUser));
 
         //Act & Assert
         assertDoesNotThrow(() -> {
@@ -257,7 +258,7 @@ public class AbstractServiceTest {
                 LocalDateTime.now());
 
         when(userDao.getById(1)).thenReturn(Optional.of(user));
-        when(userDao.update(1, newUser)).thenReturn(0);
+        when(userDao.update(1, newUser)).thenReturn(Optional.empty());
 
         //Act & Assert
         assertThrows(IllegalStateException.class, () -> {

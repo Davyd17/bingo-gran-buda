@@ -2,7 +2,7 @@ package com.bingogranbuda.bingo.repository.card;
 
 import com.bingogranbuda.bingo.model.Card;
 import com.bingogranbuda.bingo.model.status.CardStatus;
-import com.bingogranbuda.bingo.util.repository.UtilDao;
+import com.bingogranbuda.bingo.util.repository.SqlUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -22,11 +22,11 @@ public class CardRowMapper implements RowMapper<Card> {
     public Card mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Card(
                 rs.getInt("id"),
-                UtilDao.sqlArrayToList(rs, "numbers"),
+                SqlUtil.sqlArrayToList(rs, "numbers"),
                 cardStatusFromString(rs.getString("status")),
                 rs.getInt("user_id"),
                 rs.getInt("game_id"),
-                UtilDao.sqlArrayToList(rs, "selected_numbers"),
+                SqlUtil.sqlArrayToList(rs, "selected_numbers"),
                 rs.getTimestamp("created_at").toLocalDateTime()
         );
     }

@@ -57,7 +57,7 @@ class UserServiceTest {
                 LocalDateTime.now());
 
         when(userDao.getByUsername("userTest")).thenReturn(Optional.empty());
-        when(userDao.insert(user)).thenReturn(1);
+        when(userDao.insert(user)).thenReturn(Optional.of(user));
 
         //Act & Assert
         assertDoesNotThrow(() -> userService.create(user));
@@ -77,7 +77,7 @@ class UserServiceTest {
                 LocalDateTime.now());
 
         when(userDao.getByUsername(uniqueUsername)).thenReturn(Optional.empty());
-        when(userDao.insert(user)).thenReturn(0);
+        when(userDao.insert(user)).thenReturn(Optional.empty());
 
         //Act && Arrange
         assertThrows(IllegalStateException.class, () -> {
@@ -107,7 +107,7 @@ class UserServiceTest {
 
         when(userDao.getByUsername(newUser.username())).thenReturn(Optional.empty());
         when(userDao.getById(1)).thenReturn(Optional.of(oldUser));
-        when(userDao.update(1, newUser)).thenReturn(1);
+        when(userDao.update(1, newUser)).thenReturn(Optional.of(newUser));
 
         //Act & Assert
         assertDoesNotThrow(() -> {
@@ -152,7 +152,7 @@ class UserServiceTest {
 
         when(userDao.getById(1)).thenReturn(Optional.of(user));
         when(userDao.getByUsername(user.username())).thenReturn(Optional.empty());
-        when(userDao.update(1, user)).thenReturn(0);
+        when(userDao.update(1, user)).thenReturn(Optional.empty());
 
         //Act & Assert
         assertThrows(IllegalStateException.class, () -> {

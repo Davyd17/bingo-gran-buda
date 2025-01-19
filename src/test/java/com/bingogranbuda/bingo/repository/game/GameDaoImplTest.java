@@ -90,9 +90,7 @@ public class GameDaoImplTest {
                         .boxed().toList()
         );
 
-        int result = gameDao.insert(newGame);
-
-        assertThat(result).isEqualTo(1);
+        assertThat(gameDao.insert(newGame)).isPresent();
     }
 
     @Test
@@ -130,9 +128,6 @@ public class GameDaoImplTest {
                         .boxed().toList()
         );
 
-        int result = gameDao.update(1, newGame);
-
-        assertThat(result).isEqualTo(1);
+        assertThat(gameDao.update(1, newGame)).isPresent();
     }
-
 }

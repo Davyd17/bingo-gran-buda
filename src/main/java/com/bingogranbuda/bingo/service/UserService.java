@@ -25,26 +25,26 @@ public class UserService extends AbstractService<User>{
     }
 
     @Override
-    public void create(User newUser){
+    public User create(User newUser){
 
         verifyUsernameDuplication(newUser.username());
 
-        UtilService.verifyRowAffected(
-                dao.insert(newUser),
-                "Oops something went wrong, user couldn't be created"
-        );
+        return dao.insert(newUser)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Oops something went wrong, User couldn't be created"
+                ));
     }
 
     @Override
-    public void update(Integer id, User newUser) {
+    public User update(Integer id, User newUser) {
 
         super.findById(id);
 
         verifyUsernameDuplication(newUser.username());
 
-        UtilService.verifyRowAffected(
-                dao.update(id, newUser),
-                "Oops something went wrong, user couldn't be updated"
-        );
+        return dao.update(id, newUser)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Oops something went wrong, User couldn't be Updated"
+                        ));
     }
 }

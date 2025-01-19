@@ -1,6 +1,7 @@
 package com.bingogranbuda.bingo.repository.user;
 
 import com.bingogranbuda.bingo.model.User;
+import com.bingogranbuda.bingo.util.repository.sql_parameter.UserSQLParamBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -42,7 +43,7 @@ public class UserDaoImpl implements UserDao{
                 .findFirst();
     }
 
-    public Optional<User> getByUsername(String username){
+    public Optional<User> getByUsername(String username) {
 
         String sql = """
                 SELECT id, username, password, created_at
@@ -55,14 +56,43 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public int insert(User entity) {
+    public Optional<User> insert(User entity) {
+
+        UserSQLParamBuilder paramBuilder
+                = new UserSQLParamBuilder(entity);
 
         String sql = """
                 INSERT INTO users (username, password, created_at)
-                VALUES (?, ?, ?);
+                VALUES (?, ?, ?)
+                RETURNING *;
                 """;
 
-        return jdbcTemplate.update(sql, entity.username(), entity.password(), entity.createdAt());
+        return jdbcTemplate.query(sql,
+                        new UserRowMapper(),
+                        paramBuilder.buildInsertParams())
+                .stream()
+                .findFirst();
+    }
+
+    @Override
+    public Optional<User> update(Integer id, User entity) {
+
+        UserSQLParamBuilder paramBuilder
+                = new UserSQLParamBuilder(entity);
+
+        String sql = """
+                UPDATE users
+                SET username = ?, password = ?, created_at = ?
+                WHERE id = ?
+                RETURNING *;
+                """;
+
+        return jdbcTemplate.query(sql,
+                        new UserRowMapper(),
+                        paramBuilder.buildUpdateParams(id))
+                .stream()
+                .findFirst();
+
     }
 
     @Override
@@ -74,16 +104,5 @@ public class UserDaoImpl implements UserDao{
                 """;
 
         return jdbcTemplate.update(sql, id);
-    }
-
-    @Override
-    public int update(Integer id, User entity) {
-
-        String sql = """
-                UPDATE users
-                SET username = ?, password = ?
-                WHERE id = ?;
-                """;
-        return jdbcTemplate.update(sql, entity.username(), entity.password(), id);
     }
 }
