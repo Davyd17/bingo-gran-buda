@@ -35,7 +35,6 @@ public class CardDaoImplTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-
     private final List<Integer> numbersFrom1to75 = new ArrayList<>(IntStream.rangeClosed(1,75)
             .map(i -> i + 1).boxed().toList());
 
@@ -137,9 +136,7 @@ public class CardDaoImplTest {
 
         );
 
-        int operationResult = cardDao.insert(newCard);
-
-        assertThat(operationResult).isEqualTo(1);
+        assertThat(cardDao.insert(newCard)).isPresent();
     }
 
     @Test
@@ -184,9 +181,7 @@ public class CardDaoImplTest {
                 LocalDateTime.now()
         );
 
-        int result = cardDao.update(1, newCard);
-
-        assertThat(result).isEqualTo(1);
+        assertThat(cardDao.update(1, newCard)).isPresent();
     }
 
 

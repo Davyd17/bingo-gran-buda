@@ -1,16 +1,15 @@
 package com.bingogranbuda.bingo.repository.card;
 
 import com.bingogranbuda.bingo.model.Card;
-import com.bingogranbuda.bingo.util.repository.UtilDao;
+import com.bingogranbuda.bingo.util.repository.sql_parameter.CardSQLParamBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CardDaoImpl implements CardDao{
+public class CardDaoImpl implements CardDao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -44,18 +43,42 @@ public class CardDaoImpl implements CardDao{
     }
 
     @Override
-    public int insert(Card entity) {
+    public Optional<Card> insert(Card entity) {
+
+        CardSQLParamBuilder paramBuilder
+                = new CardSQLParamBuilder(jdbcTemplate, entity);
 
         String sql = """
                 INSERT INTO cards (numbers, status, user_id, game_id, selected_numbers, created_at)
-                VALUES (?, ?::card_status, ?, ?, ?, ?);
+                VALUES (?, ?::card_status, ?, ?, ?, ?)
+                RETURNING *;
                 """;
 
-        Array numbers = UtilDao.listToSqlArray(jdbcTemplate, entity.numbers());
-        Array selectedNumbers = UtilDao.listToSqlArray(jdbcTemplate, entity.selectedNumbers());
+        return jdbcTemplate.query(sql,
+                new CardRowMapper(),
+                paramBuilder.buildInsertParams())
+                .stream()
+                .findFirst();
+    }
 
-        return jdbcTemplate.update(sql, numbers, entity.status().name().toLowerCase(),
-                entity.userId(), entity.gameId(), selectedNumbers, entity.created_at());
+    @Override
+    public Optional<Card> update(Integer id, Card entity) {
+
+        CardSQLParamBuilder sqlParamBuilder
+                = new CardSQLParamBuilder(jdbcTemplate, entity);
+
+        String sql = """
+                UPDATE cards
+                SET numbers = ?, status = ?::card_status, user_id = ?, game_id = ?, selected_numbers = ?, created_at = ?
+                WHERE id = ?
+                RETURNING *;
+                """;
+
+        return jdbcTemplate.query(sql,
+                        new CardRowMapper(),
+                        sqlParamBuilder.buildUpdateParams(id))
+                .stream()
+                .findFirst();
     }
 
     @Override
@@ -67,21 +90,5 @@ public class CardDaoImpl implements CardDao{
                 """;
 
         return jdbcTemplate.update(sql, id);
-    }
-
-    @Override
-    public int update(Integer id, Card entity) {
-
-        String sql = """
-                UPDATE cards
-                SET numbers = ?, status = ?::card_status, game_id = ?, selected_numbers = ?, created_at = ?
-                WHERE id = ?;
-                """;
-
-        Array numbers = UtilDao.listToSqlArray(jdbcTemplate, entity.numbers());
-        Array selectedNumbers = UtilDao.listToSqlArray(jdbcTemplate, entity.selectedNumbers());
-
-        return jdbcTemplate.update(sql, numbers, entity.status().name().toLowerCase(),
-                entity.gameId(), selectedNumbers, entity.created_at(), id);
     }
 }

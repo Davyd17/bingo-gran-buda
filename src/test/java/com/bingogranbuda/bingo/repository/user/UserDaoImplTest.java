@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -101,9 +100,7 @@ public class UserDaoImplTest {
                 "passwordTest",
                 LocalDateTime.now());
 
-        int result = userDao.insert(newUser);
-
-        assertThat(result).isEqualTo(1);
+        assertThat(userDao.insert(newUser)).isPresent();
     }
 
     @Test
@@ -138,9 +135,7 @@ public class UserDaoImplTest {
                 LocalDateTime.now()
         );
 
-        int result = userDao.update(1, newUser);
-
-        assertThat(result).isEqualTo(1);
+        assertThat(userDao.update(1, newUser)).isPresent();
     }
 
 

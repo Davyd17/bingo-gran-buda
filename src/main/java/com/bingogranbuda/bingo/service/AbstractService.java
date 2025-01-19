@@ -31,12 +31,12 @@ public abstract class AbstractService<T> {
                 );
     }
 
-    public void create(T entity){
+    public T create(T entity){
 
-        UtilService.verifyRowAffected(
-                dao.insert(entity),
-                String.format("Oops something went wrong, %s couldn't be created", getEntityTypeSimpleName())
-        );
+        return dao.insert(entity)
+                .orElseThrow(() -> new IllegalStateException(
+                        String.format("Oops something went wrong, %s couldn't be created", getEntityTypeSimpleName())
+                ));
     }
 
     public void delete(Integer id){
@@ -49,13 +49,13 @@ public abstract class AbstractService<T> {
         );
     }
 
-    public void update(Integer id, T newEntity){
+    public T update(Integer id, T newEntity){
 
         findById(id);
 
-        UtilService.verifyRowAffected(
-                dao.update(id, newEntity),
-                String.format("Oops something went wrong, %s couldn't be updated", getEntityTypeSimpleName())
-        );
+        return dao.update(id, newEntity)
+                .orElseThrow(() -> new IllegalStateException(
+                        String.format("Oops something went wrong, %s couldn't be created", getEntityTypeSimpleName())
+                ));
     }
 }

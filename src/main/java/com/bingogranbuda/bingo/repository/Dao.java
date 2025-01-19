@@ -9,9 +9,9 @@ public interface Dao<T> {
 
     Optional<T> getById(Integer id);
 
-    int insert(T entity);
+    Optional<T> insert(T entity);
+
+    Optional<T> update(Integer id, T entity);
 
     int delete(Integer id);
-
-    int update(Integer id, T entity);
 }

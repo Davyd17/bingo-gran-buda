@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class UtilDao {
+public class SqlUtil {
 
     public static List<Integer> sqlArrayToList(ResultSet rs, String columnLabel) throws SQLException {
 
