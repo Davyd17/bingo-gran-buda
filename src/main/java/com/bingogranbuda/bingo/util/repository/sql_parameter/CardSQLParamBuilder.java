@@ -39,7 +39,6 @@ public class CardSQLParamBuilder extends SQLParamBuilder<Card> {
                 entity.userId(),
                 entity.gameId(),
                 selectedNumbers,
-                entity.created_at(),
                 id
         };
     }
