@@ -25,7 +25,6 @@ public class UserSQLParamBuilder extends SQLParamBuilder<User>{
         return new Object[]{
                 entity.username(),
                 entity.password(),
-                entity.createdAt(),
                 id
         };
     }
