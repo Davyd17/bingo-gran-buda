@@ -69,7 +69,7 @@ public class CardDaoImpl implements CardDao {
 
         String sql = """
                 UPDATE cards
-                SET numbers = ?, status = ?::card_status, user_id = ?, game_id = ?, selected_numbers = ?, created_at = ?
+                SET numbers = ?, status = ?::card_status, user_id = ?, game_id = ?, selected_numbers = ?
                 WHERE id = ?
                 RETURNING *;
                 """;
