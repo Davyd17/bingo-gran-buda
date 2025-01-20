@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
 
         String sql = """
                 UPDATE users
-                SET username = ?, password = ?, created_at = ?
+                SET username = ?, password = ?
                 WHERE id = ?
                 RETURNING *;
                 """;
